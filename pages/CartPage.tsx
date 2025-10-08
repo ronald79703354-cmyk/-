@@ -46,7 +46,7 @@ const CartPage: React.FC = () => {
                  <input 
                     type="number"
                     value={item.quantity}
-                    onChange={(e) => updateQuantity(item.product.id, parseInt(e.target.value))}
+                    onChange={(e) => updateQuantity(item.product.id, parseInt(e.target.value) || 1)}
                     min="1"
                     max={item.product.stock}
                     className="w-16 p-2 border rounded-md text-center"

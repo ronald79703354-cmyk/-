@@ -77,8 +77,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const clearCart = () => {
-      // In a real app this would call an API
-      setCart([]);
+    localStorage.removeItem('cart');
+    setCart([]);
   }
 
   const checkout = async (customerInfo: CustomerInfo, paymentMethod: PaymentMethod): Promise<Order> => {

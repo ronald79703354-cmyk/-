@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
 import type { CustomerInfo, PaymentMethod } from '../types';
+import Spinner from '../components/Spinner';
 
 const iraqGovernorates = [
   'بغداد', 'البصرة', 'نينوى', 'أربيل', 'الأنبار', 'بابل', 'ذي قار', 'ديالى', 'دهوك',
@@ -12,6 +13,14 @@ const CheckoutPage: React.FC = () => {
   const [step, setStep] = useState(1);
   const { cart, totalRevenue, netProfit, checkout, loading } = useCart();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect if cart is empty after initial load check is complete
+    if (!loading && cart.length === 0) {
+      navigate('/cart', { replace: true });
+    }
+  }, [cart, loading, navigate]);
+
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     name: '',
     phone: '',
@@ -60,6 +69,14 @@ const CheckoutPage: React.FC = () => {
     )
   };
 
+  // Show a spinner while checking for cart or redirecting
+  if (loading || cart.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Spinner />
+      </div>
+    );
+  }
 
   const renderStep = () => {
     switch (step) {

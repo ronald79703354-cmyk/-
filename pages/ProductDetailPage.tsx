@@ -125,7 +125,7 @@ const ProductDetailPage: React.FC = () => {
               min="1"
               max={product.stock}
               value={quantity}
-              onChange={(e) => setQuantity(parseInt(e.target.value))}
+              onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
               className="w-24 px-3 py-2 border rounded-md"
             />
           </div>

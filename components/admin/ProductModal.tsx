@@ -37,13 +37,23 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, c
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
+
+    const price = parseFloat(formData.get('price') as string);
+    const stock = parseInt(formData.get('stock') as string, 10);
+    const categoryId = parseInt(formData.get('categoryId') as string, 10);
+
+    if (isNaN(price) || isNaN(stock) || price < 0 || stock < 0) {
+        alert("الرجاء إدخال قيم صحيحة وموجبة للسعر والمخزون.");
+        return;
+    }
+    
     const updatedProduct = {
         ...product,
         name: formData.get('name') as string,
         description: formData.get('description') as string,
-        price: parseFloat(formData.get('price') as string),
-        stock: parseInt(formData.get('stock') as string),
-        categoryId: parseInt(formData.get('categoryId') as string),
+        price,
+        stock,
+        categoryId,
         imageUrl: imagePreview || product.imageUrl,
     };
     onSave(updatedProduct);
@@ -79,11 +89,11 @@ const ProductModal: React.FC<ProductModalProps> = ({ isOpen, onClose, product, c
              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block mb-1 font-semibold text-gray-700">السعر (التكلفة)</label>
-                  <input name="price" type="number" step="1000" defaultValue={product.price} className="w-full p-2 border rounded" required />
+                  <input name="price" type="number" step="any" min="0" defaultValue={product.price} className="w-full p-2 border rounded" required />
                 </div>
                  <div>
                   <label className="block mb-1 font-semibold text-gray-700">المخزون</label>
-                  <input name="stock" type="number" defaultValue={product.stock} className="w-full p-2 border rounded" required />
+                  <input name="stock" type="number" min="0" defaultValue={product.stock} className="w-full p-2 border rounded" required />
                 </div>
             </div>
             <div>
